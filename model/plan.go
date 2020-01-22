@@ -8,7 +8,7 @@ import (
 type Plan struct {
 	Model
 
-	PlanContent string `json:"planContent"`
+	Content string `json:"content"`
 	CreatedBy string `json:"created_by"`
 	ModifiedBy string `json:"modified_by"`
 	IsDeleted int `json:"isDeleted"`
@@ -19,9 +19,9 @@ func (plan *Plan) BeforeCreate(scope *gorm.Scope) error {
 	return nil
 }
 
-func AddPlan(planContent string, createdBy string) bool{
+func AddPlan(content string, createdBy string) bool{
 	db.Create(&Plan {
-		PlanContent : planContent,
+		Content : content,
 		CreatedBy : createdBy,
 	})
 	return true
@@ -41,9 +41,15 @@ func (plan *Plan) BeforeUpdate(scope *gorm.Scope) error {
 	return nil
 }
 
-func DeletePlan(id int) bool{
+func DeletePlan(id int) bool {
 	var plan Plan
 	db.Model(&plan).Where("id = ?", id).Update("is_deleted", 1)
+	return true
+}
+
+func EditPlan(id int, content string) bool {
+	var plan Plan
+	db.Model(&plan).Where("id = ?", id).Update("content", content)
 	return true
 }
 

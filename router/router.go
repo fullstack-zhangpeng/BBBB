@@ -21,6 +21,7 @@ func InitRouter() *gin.Engine {
 		//新建计划
 		apiv1.POST("/plan", v1.AddPlan)
 		apiv1.DELETE("/plan/:id", v1.DeletePlan)
+		apiv1.PUT("/plan/:id", v1.EditPlan)
 		////获取标签列表
 		//apiv1.GET("/users", v1.Test)
 		////新建标签

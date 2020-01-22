@@ -13,7 +13,6 @@ import (
 //新增计划
 func AddPlan(c *gin.Context) {
 	planContent := c.PostForm("planContent")
-	fmt.Println(planContent)
 	createBy := c.Param("createBy")
 	if len(planContent) == 0 {
 		c.JSON(200, gin.H{"msg": "计划内容不能为空"})
@@ -41,14 +40,21 @@ func DeletePlan(c *gin.Context) {
 
 //修改计划
 func EditPlan(c *gin.Context) {
-	planId := c.Param("planId")
-	if len(planId) == 0 {
-		c.AbortWithStatusJSON(200, gin.H{"msg": "编辑失败，未找到此条计划"})
+	id, _ := strconv.Atoi(c.Param("id"))
+	if id < 0 {
+		c.JSON(200, gin.H{"msg": "编辑失败，未找到此条计划"})
+		return
 	}
-	planContent := c.Param("planContent")
-	if len(planContent) == 0 {
-		c.AbortWithStatusJSON(200, gin.H{"msg": "计划内容不能为空"})
+	if !model.ExistPlanById(id) {
+		fmt.Println("000")
+		c.JSON(200, gin.H{"msg": "编辑失败，未找到此条计划"})
+		return
 	}
+	content := c.PostForm("planContent")
+	if len(content) == 0 {
+		c.JSON(200, gin.H{"msg": "编辑失败，计划内容不能为空"})
+	}
+	model.EditPlan(id, content)
 	c.JSON(200, gin.H{"msg": "success"})
 }
 
