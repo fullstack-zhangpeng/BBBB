@@ -27,7 +27,6 @@ func init() {
 	if err != nil {
 		log.Fatalf("Fail to parse 'conf/app.ini': %v", err)
 	}
-	fmt.Println(Cfg)
 
 	sec, err := Cfg.GetSection("app")
 	if err != nil {

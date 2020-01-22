@@ -1,5 +1,11 @@
 package model
 
+import (
+	"fmt"
+	"github.com/jinzhu/gorm"
+	"time"
+)
+
 type Plan struct {
 	Model
 
@@ -23,9 +29,21 @@ func ExistPlanByName(name string) bool {
 }
 
 func AddPlan(planContent string, createdBy string) bool{
+	fmt.Println(planContent)
+	fmt.Println(createdBy)
 	db.Create(&Plan {
 		PlanContent : planContent,
 		CreatedBy : createdBy,
 	})
 	return true
+}
+
+func (plan *Plan) BeforeCreate(scope *gorm.Scope) error {
+	scope.SetColumn("CreatedOn", time.Now().Unix())
+	return nil
+}
+
+func (plan *Plan) BeforeUpdate(scope *gorm.Scope) error {
+	scope.SetColumn("ModifiedOn", time.Now().Unix())
+	return nil
 }

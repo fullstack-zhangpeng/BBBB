@@ -15,15 +15,17 @@ package v1
 
 import (
 	"MyService/model"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
 //新增文章标签
 func AddPlan(c *gin.Context) {
-	planContent := c.Param("planContent")
+	planContent := c.PostForm("planContent")
+	fmt.Println(planContent)
 	createBy := c.Param("createBy")
 	if len(planContent) == 0 {
-		c.AbortWithStatusJSON(200, gin.H{"msg": "计划内容不能为空"})
+		c.JSON(200, gin.H{"msg": "计划内容不能为空"})
 		return
 	}
 	model.AddPlan(planContent, createBy)
