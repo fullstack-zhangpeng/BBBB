@@ -1,25 +1,16 @@
 //计划
 
-//CREATE TABLE `plan` (
-//`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-//`planContent` varchar(100) DEFAULT '' COMMENT '标签名称',
-//`created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
-//`created_by` varchar(100) DEFAULT '' COMMENT '创建人',
-//`modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
-//`modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
-//`deleted_on` int(10) unsigned DEFAULT '0',
-//PRIMARY KEY (`id`)
-//) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计划管理';
-
 package v1
 
 import (
 	"MyService/model"
 	"fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
-//新增文章标签
+//新增计划
 func AddPlan(c *gin.Context) {
 	planContent := c.PostForm("planContent")
 	fmt.Println(planContent)
@@ -32,15 +23,23 @@ func AddPlan(c *gin.Context) {
 	c.JSON(200, gin.H{"msg": "success"})
 }
 
-
-func GetPlan(c *gin.Context) {
-	planId := c.Param("planId")
-	if len(planId) == 0 {
-		//c.AbortWithStatusJSON(200, gin.H{"msg": "计划内容不能为空"})
+//删除计划
+func DeletePlan(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if id < 0 {
+		c.JSON(200, gin.H{"msg": "删除失败，未找到此条计划"})
+		return
 	}
+	if !model.ExistPlanById(id) {
+		fmt.Println("000")
+		c.JSON(200, gin.H{"msg": "删除失败，未找到此条计划"})
+		return
+	}
+	model.DeletePlan(id)
 	c.JSON(200, gin.H{"msg": "success"})
 }
 
+//修改计划
 func EditPlan(c *gin.Context) {
 	planId := c.Param("planId")
 	if len(planId) == 0 {
@@ -53,11 +52,12 @@ func EditPlan(c *gin.Context) {
 	c.JSON(200, gin.H{"msg": "success"})
 }
 
-//新增文章标签
-func DeletePlan(c *gin.Context) {
+//查询计划
+func GetPlan(c *gin.Context) {
 	planId := c.Param("planId")
 	if len(planId) == 0 {
-		c.AbortWithStatusJSON(200, gin.H{"msg": "编辑失败，未找到此条计划"})
+		//c.AbortWithStatusJSON(200, gin.H{"msg": "计划内容不能为空"})
 	}
 	c.JSON(200, gin.H{"msg": "success"})
 }
+

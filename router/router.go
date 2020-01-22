@@ -20,6 +20,7 @@ func InitRouter() *gin.Engine {
 	{
 		//新建计划
 		apiv1.POST("/plan", v1.AddPlan)
+		apiv1.DELETE("/plan/:id", v1.DeletePlan)
 		////获取标签列表
 		//apiv1.GET("/users", v1.Test)
 		////新建标签
@@ -27,7 +28,7 @@ func InitRouter() *gin.Engine {
 		////更新指定标签
 		//apiv1.PUT("/users/:id", v1.EditUser)
 		////删除指定标签
-		//apiv1.DELETE("/users/:id", v1.DeleteUser)
+
 	}
 	return r
 }
