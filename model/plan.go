@@ -53,16 +53,14 @@ func EditPlan(id int, content string) bool {
 	return true
 }
 
-func GetPlans(maps interface {}) (count int){
-	db.Model(&Plan{}).Where(maps).Count(&count)
-	return
+func GetPlan() []Plan {
+	var plans []Plan
+	db.Where("is_deleted = ?", 0).Find(&plans)
+	return plans
 }
 
-func ExistPlanByName(name string) bool {
+func GetOnePlan(id int) Plan {
 	var plan Plan
-	db.Select("id").Where("name = ?", name).First(&plan)
-	if plan.ID > 0 {
-		return true
-	}
-	return false
+	db.Where("id = ? AND is_deleted = ?", id, 0).First(&plan)
+	return plan
 }

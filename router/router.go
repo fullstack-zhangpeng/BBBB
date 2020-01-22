@@ -18,18 +18,16 @@ func InitRouter() *gin.Engine {
 	apiv1 := r.Group("/api/v1")
 	//apiv1.Use(jwt.JWT())
 	{
-		//新建计划
+		//新增计划
 		apiv1.POST("/plan", v1.AddPlan)
+		//删除计划
 		apiv1.DELETE("/plan/:id", v1.DeletePlan)
+		//修改计划
 		apiv1.PUT("/plan/:id", v1.EditPlan)
-		////获取标签列表
-		//apiv1.GET("/users", v1.Test)
-		////新建标签
-		//apiv1.POST("/users", v1.AddUser)
-		////更新指定标签
-		//apiv1.PUT("/users/:id", v1.EditUser)
-		////删除指定标签
-
+		//获取计划列表
+		apiv1.GET("/plan", v1.GetPlan)
+		//获取指定 id 的计划
+		apiv1.GET("/plan/:id", v1.GetOnePlan)
 	}
 	return r
 }

@@ -60,10 +60,19 @@ func EditPlan(c *gin.Context) {
 
 //查询计划
 func GetPlan(c *gin.Context) {
-	planId := c.Param("planId")
-	if len(planId) == 0 {
-		//c.AbortWithStatusJSON(200, gin.H{"msg": "计划内容不能为空"})
-	}
-	c.JSON(200, gin.H{"msg": "success"})
+	page, _ := strconv.Atoi(c.Query("id"))
+	count, _ := strconv.Atoi(c.Query("id"))
+	fmt.Printf("page: %d count: %d", page, count)
+	plans := model.GetPlan()
+	c.JSON(200, gin.H{"msg": "success", "planList": plans})
 }
 
+func GetOnePlan(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if id < 0 {
+		c.JSON(200, gin.H{"msg": "未找到此条计划"})
+		return
+	}
+	plan := model.GetOnePlan(id)
+	c.JSON(200, gin.H{"msg": "success", "plan": plan})
+}
