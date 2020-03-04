@@ -1,0 +1,10 @@
+{
+  "address": "0.0.0.0:9090",
+  "mysql": {
+    "host": "",
+    "port": "3306",
+    "database": "service",
+    "user": "",
+    "password": ""
+  }
+}
