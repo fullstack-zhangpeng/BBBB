@@ -24,9 +24,7 @@ type Response struct {
 }
 
 func (d *DingTalk) Send(message Message) (Response, error) {
-	fmt.Printf("%v", message)
-	res := Response{}
-
+	var res Response
 	url, err := GetDingTalkURL(d.AccessToken, d.Secret)
 	if err != nil {
 		return res, err
@@ -53,7 +51,6 @@ func (d *DingTalk) Send(message Message) (Response, error) {
 	if err != nil {
 		return res, fmt.Errorf("unmarshal http response body from json error = %v", err)
 	}
-	fmt.Printf("%v", res)
 	return res, nil
 }
 

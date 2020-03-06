@@ -2,35 +2,59 @@ package model
 
 import (
 	"Service/service-server/db"
+	"fmt"
 )
 
 type Duty struct {
-	id        int    `gorm:"primary_key"`
 	Name      string `json:"name"`
 	Position  string `json:"position"`
 	Phone     string `json:"phone"`
-	DutyDate  string `json:"dutyDate"`
+	Date      string `json:"dutyDate"`
 	createdAt int
 	updatedAt int
 	deletedAt int
 }
 
 //Create
-func CreateDuty(name string, position string, phone string, dutyDate string) {
+func CreateDuty(name string, position string, phone string, date string) {
+	d := Duty{
+		Phone:    phone,
+		Date:     date,
+	}
+	var result Duty
+
+	db.GetDB().Where(&d).Find(&result)
+
+	if result.Date == "" {
+		fmt.Println("不存在")
+	} else {
+		fmt.Println("已存在")
+	}
+
+	return
+	fmt.Printf("%v", d)
+	newRecord := db.GetDB().NewRecord(d)
+	fmt.Println(newRecord)
 	db.GetDB().Create(Duty{
 		Name:     name,
 		Position: position,
 		Phone:    phone,
-		DutyDate: dutyDate,
+		Date:     date,
 	})
 }
 
 //Retrieve
-func RetrieveByDate(dutyDate string) []Duty {
+func RetrieveDutyByDate(dutyDate string) []Duty {
 	var dutyList []Duty
 	db.GetDB().Where(&Duty{
-		DutyDate: dutyDate,
+		Date: dutyDate,
 	}).Find(&dutyList)
+	return dutyList
+}
+
+func (d *Duty) NewRetrieve() []Duty {
+	var dutyList []Duty
+	db.GetDB().Where(d).Find(&dutyList)
 	return dutyList
 }
 

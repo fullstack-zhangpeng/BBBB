@@ -11,8 +11,9 @@ func init() {
 
 func loadConfig() {
 	viper.SetConfigFile("./config/config.json")
-	err := viper.ReadInConfig() // 会查找和读取配置文件
-	if err != nil {             // Handle errors reading the config file
+	err := viper.ReadInConfig()
+	//Handle errors reading the config file
+	if err != nil {
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
 }
