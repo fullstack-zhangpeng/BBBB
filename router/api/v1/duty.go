@@ -2,6 +2,7 @@ package v1
 
 import (
 	"Service/service-server/db/model"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,6 +34,26 @@ func DutyList(c *gin.Context) {
 }
 
 func AddDuty(c *gin.Context)  {
-	//d := model.Duty{}
-	//model.CreateDuty("张鹏", "iOS", "15810746400", "20200303")
+	name := c.PostForm("name")
+	phone := c.PostForm("phone")
+	date := c.PostForm("date")
+	fmt.Println(name)
+	fmt.Println(phone)
+	fmt.Println(date)
+	res := make(map[string]interface{})
+	d := model.Duty{
+		Name:name,
+		Phone:phone,
+		Date:date,
+	}
+	success := d.NewCreate()
+	if !success {
+		res["msg"] = "添加失败"
+		c.JSON(200, res)
+		return
+	}
+
+	res["msg"] = "添加成功"
+	c.JSON(200, res)
+	return
 }

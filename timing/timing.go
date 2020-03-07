@@ -12,7 +12,7 @@ var c *cron.Cron
 
 func Init() {
 	c = cron.New()
-	c.AddFunc("0 0 9 * * *", func() {
+	c.AddFunc("0 10 9 * * *", func() {
 		sendDutyInfo()
 	})
 	//c.AddFunc("* * * * * *", func() {
@@ -31,7 +31,6 @@ func Stop() {
 
 func getTodayDutyInfo() []model.Duty {
 	today := time.Now().Format("20060102")
-	today = "20200307"
 	p := &model.Duty{
 		Date: today,
 	}

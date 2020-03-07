@@ -10,12 +10,19 @@ type Duty struct {
 	Position  string `json:"position"`
 	Phone     string `json:"phone"`
 	Date      string `json:"dutyDate"`
-	createdAt int
-	updatedAt int
-	deletedAt int
 }
 
 //Create
+func (d *Duty) NewCreate() bool {
+	var result Duty
+	db.GetDB().Where(&d).Find(&result)
+	if result.Date != "" {
+		return false
+	}
+	db.GetDB().Create(d)
+	return true
+}
+
 func CreateDuty(name string, position string, phone string, date string) {
 	d := Duty{
 		Phone:    phone,
