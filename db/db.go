@@ -28,6 +28,7 @@ func initDB() {
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return "tbl_" + defaultTableName
 	}
+	database.LogMode(true)
 	//禁用表名复数
 	database.SingularTable(true)
 	db = database

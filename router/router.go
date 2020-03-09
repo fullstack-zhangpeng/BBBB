@@ -20,8 +20,9 @@ func InitRouter() *gin.Engine {
 	apiv1 := r.Group("/api/v1")
 	{
 		//打开或关闭值班推送
-		apiv1.POST("/duty", v1.Duty)
+		//apiv1.POST("/duty", v1.Duty)
 		apiv1.POST("/addDuty", v1.AddDuty)
+		apiv1.POST("/deleteDuty", v1.DeleteDuty)
 		apiv1.GET("/dutyList", v1.DutyList)
 	}
 	return r

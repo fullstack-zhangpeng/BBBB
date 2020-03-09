@@ -9,12 +9,12 @@ type Link struct {
 
 type LinkMessage struct {
 	MsgType MessageType `json:"msgtype"`
-	Link    Link    `json:"link"`
+	Link    Link        `json:"link"`
 }
 
 func NewLinkMessage(link Link) *LinkMessage {
 	return &LinkMessage{
 		MsgType: MessageTypeLink,
-		Link: link,
+		Link:    link,
 	}
 }

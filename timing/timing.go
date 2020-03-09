@@ -34,7 +34,7 @@ func getTodayDutyInfo() []model.Duty {
 	p := &model.Duty{
 		Date: today,
 	}
-	dutyList := p.NewRetrieve()
+	dutyList := p.Retrieve()
 
 	return dutyList
 }
