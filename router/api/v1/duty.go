@@ -2,7 +2,7 @@ package v1
 
 import (
 	"Service/service-server/db/model"
-	"fmt"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,18 +33,23 @@ func DutyList(c *gin.Context) {
 	c.JSON(200, res)
 }
 
-func AddDuty(c *gin.Context)  {
-	name := c.PostForm("name")
-	phone := c.PostForm("phone")
-	date := c.PostForm("date")
-	fmt.Println(name)
-	fmt.Println(phone)
-	fmt.Println(date)
+func AddDuty(c *gin.Context) {
+	var body map[string]string
+	if err := c.ShouldBindJSON(&body); err != nil {
+		log.Fatalln(err)
+	}
+
+	name := body["name"]
+	phone := body["phone"]
+	position := body["position"]
+	date := body["date"]
+
 	res := make(map[string]interface{})
 	d := model.Duty{
-		Name:name,
-		Phone:phone,
-		Date:date,
+		Name:     name,
+		Phone:    phone,
+		Position: position,
+		Date:     date,
 	}
 	success := d.NewCreate()
 	if !success {

@@ -11,5 +11,5 @@ func main() {
 	timing.Init()
 	timing.Start()
 	router := router.InitRouter()
-	router.Run()
+	router.Run(":8081")
 }
