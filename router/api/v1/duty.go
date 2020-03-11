@@ -2,11 +2,8 @@ package v1
 
 import (
 	"Service/service-server/db/model"
-	"github.com/jinzhu/gorm"
-	"log"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func Duty(c *gin.Context) {
@@ -21,6 +18,7 @@ func DutyList(c *gin.Context) {
 	res := make(map[string]interface{})
 	date := c.Query("date")
 	if date == "" {
+		res["code"] = -1
 		res["msg"] = "请输入想要查询的日期"
 		c.JSON(200, res)
 		return
@@ -30,6 +28,7 @@ func DutyList(c *gin.Context) {
 		Date: date,
 	}
 	dutyList := p.Retrieve()
+	res["code"] = 0
 	res["msg"] = "成功"
 	res["dutyList"] = dutyList
 	c.JSON(200, res)
@@ -49,6 +48,7 @@ func AddDuty(c *gin.Context) {
 	res := make(map[string]interface{})
 
 	if (name == "") || (position == "") {
+		res["code"] = -1
 		res["msg"] = "添加失败，姓名或位置为空"
 		c.JSON(200, res)
 		return
@@ -64,6 +64,7 @@ func AddDuty(c *gin.Context) {
 	exist := checkExist(d)
 
 	if exist {
+		res["code"] = -1
 		res["msg"] = "该条记录已存在，请刷新查看"
 		c.JSON(200, res)
 		return
@@ -71,11 +72,12 @@ func AddDuty(c *gin.Context) {
 
 	err := d.Create()
 	if err != nil {
+		res["code"] = -1
 		res["msg"] = err.Error()
 		c.JSON(200, res)
 		return
 	}
-
+	res["code"] = 0
 	res["msg"] = "添加成功"
 	c.JSON(200, res)
 }
@@ -90,35 +92,22 @@ func checkExist(duty model.Duty) bool {
 }
 
 func DeleteDuty(c *gin.Context) {
-	var body map[string]string
-	if err := c.ShouldBindJSON(&body); err != nil {
+	var duty model.Duty
+	if err := c.ShouldBindJSON(&duty); err != nil {
 		log.Fatalln(err)
 	}
-	id := body["id"]
-
-	int, err := strconv.ParseUint(id, 10, 64)
 
 	res := make(map[string]interface{})
 
-	if err != nil {
-		res["msg"] = "id 错误"
-		c.JSON(200, res)
-		return
-	}
-
-	d := model.Duty{
-		Model: gorm.Model{
-			ID: uint(int),
-		},
-	}
-
-	deleteErr := d.Delete()
+	deleteErr := duty.Delete()
 	if deleteErr != nil {
+		res["code"] = -1
 		res["msg"] = deleteErr.Error()
 		c.JSON(200, res)
 		return
 	}
 
+	res["code"] = 0
 	res["msg"] = "删除成功"
 	c.JSON(200, res)
 }
